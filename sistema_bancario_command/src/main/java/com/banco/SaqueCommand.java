@@ -1,8 +1,8 @@
 package com.banco;
 
 public class SaqueCommand implements Comando {
-    private ContaBancaria conta;
-    private double valor;
+    private final ContaBancaria conta;
+    private final double valor;
     private boolean executado = false;
 
     public SaqueCommand(ContaBancaria conta, double valor) {
@@ -13,7 +13,7 @@ public class SaqueCommand implements Comando {
     @Override
     public void executar() {
         conta.sacar(valor);
-        executado = true; // Só chega aqui se sacar() não lançar exceção
+        executado = true;
     }
 
     @Override
@@ -24,7 +24,8 @@ public class SaqueCommand implements Comando {
         }
     }
 
+    @Override
     public String getDescricao() {
-        return "Saque de R$" + valor + " na conta de " + conta.getTitular();
+        return String.format("Saque de R$%.2f na conta de %s", valor, conta.getTitular());
     }
 }

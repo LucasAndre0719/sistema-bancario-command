@@ -1,9 +1,9 @@
 package com.banco;
 
 public class TransferenciaCommand implements Comando {
-    private ContaBancaria origem;
-    private ContaBancaria destino;
-    private double valor;
+    private final ContaBancaria origem;
+    private final ContaBancaria destino;
+    private final double valor;
     private boolean executada = false;
 
     public TransferenciaCommand(ContaBancaria origem, ContaBancaria destino, double valor) {
@@ -14,8 +14,13 @@ public class TransferenciaCommand implements Comando {
 
     @Override
     public void executar() {
-        origem.sacar(valor);      // Se não houver saldo, lança exceção aqui e não deposita no destino
-        destino.depositar(valor);
+        origem.sacar(valor);
+        try {
+            destino.depositar(valor);
+        } catch (RuntimeException e) {
+            origem.depositar(valor); // rollback: não perde dinheiro se o depósito falhar
+            throw e;
+        }
         executada = true;
     }
 
@@ -28,7 +33,9 @@ public class TransferenciaCommand implements Comando {
         }
     }
 
+    @Override
     public String getDescricao() {
-        return "Transferência de R$" + valor + " (" + origem.getTitular() + " -> " + destino.getTitular() + ")";
+        return String.format("Transferência de R$%.2f (%s -> %s)",
+                valor, origem.getTitular(), destino.getTitular());
     }
 }
