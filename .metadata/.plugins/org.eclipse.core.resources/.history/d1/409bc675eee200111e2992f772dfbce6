@@ -1,0 +1,17 @@
+package com.banco;
+
+public class DepositoCommand implements Comando {
+
+	@Override
+	public void executar() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void desfazer() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

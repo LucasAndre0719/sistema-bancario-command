@@ -1,0 +1,6 @@
+package com.banco;
+
+public class DepositoComand implements Comando {
+	private Deposito deposito
+
+}

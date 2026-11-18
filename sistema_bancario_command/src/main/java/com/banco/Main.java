@@ -6,12 +6,19 @@ public class Main {
 
         conta.depositar(100);
         conta.sacar(30);
-        System.out.println("Saldo: " + conta.getSaldo()); // esperado: 70.0
+        System.out.println("Saldo: " + conta.getSaldo()); 
 
         try {
             conta.sacar(500);
         } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage()); // esperado: Saldo insuficiente.
+            System.out.println("Erro: " + e.getMessage()); 
         }
+        
+        Comando deposito = new DepositoCommand(conta, 50);
+        deposito.executar();
+        System.out.println("Após depósito: " + conta.getSaldo());
+        deposito.desfazer();
+        System.out.println("Após desfazer: " + conta.getSaldo());
+        
     }
 }
